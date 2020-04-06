@@ -3,7 +3,7 @@ const randfloat = (arr, min, max, basePrice, cb = (v) => v) => {
     [min, max]
       .map((v) => v * basePrice)
       .map((v) => v + 0.99999)
-      .map((v) => Math.trunc(v))
+      .map((v) => Math.trunc(v / 1000))
       .map(cb)
   );
 };
@@ -19,35 +19,25 @@ const pattern0 = (basePrice) => {
       for (let hiPhaseLen3 = 0; hiPhaseLen3 < hiPhaseLen2and3; hiPhaseLen3++) {
         // high phase 1
         for (let i = 0; i < hiPhaseLen1; i++) {
-          randfloat(current, 0.9, 1.4, basePrice);
+          randfloat(current, 900, 1400, basePrice);
         }
         // decreasing phase 1
         for (let i = 0; i < decPhaseLen1; i++) {
-          randfloat(
-            current,
-            0.6 - 0.04 * i - 0.06 * i,
-            0.8 - 0.04 * i,
-            basePrice
-          );
+          randfloat(current, 600 - 40 * i - 60 * i, 800 - 40 * i, basePrice);
         }
         // high phase 2
         for (let i = 0; i < hiPhaseLen2and3 - hiPhaseLen3; i++) {
-          randfloat(current, 0.9, 1.4, basePrice);
+          randfloat(current, 900, 1400, basePrice);
         }
 
         // decreasing phase 2
         for (let i = 0; i < decPhaseLen2; i++) {
-          randfloat(
-            current,
-            0.6 - 0.04 * i - 0.06 * i,
-            0.8 - 0.04 * i,
-            basePrice
-          );
+          randfloat(current, 600 - 40 * i - 60 * i, 800 - 40 * i, basePrice);
         }
 
         // high phase 3
         for (let i = 0; i < hiPhaseLen3; i++) {
-          randfloat(current, 0.9, 1.4, basePrice);
+          randfloat(current, 900, 1400, basePrice);
         }
 
         // commit probability
@@ -69,21 +59,21 @@ const pattern1 = (basePrice) => {
     for (; work < peakStart; work++) {
       randfloat(
         current,
-        0.85 - 0.03 * (work - 2) - 0.02 * (work - 2),
-        0.9 - 0.03 * (work - 2),
+        850 - 30 * (work - 2) - 20 * (work - 2),
+        900 - 30 * (work - 2),
         basePrice
       );
     }
 
-    randfloat(current, 0.9, 1.4, basePrice);
-    randfloat(current, 1.4, 2.0, basePrice);
-    randfloat(current, 2.0, 6.0, basePrice);
-    randfloat(current, 1.4, 2.0, basePrice);
-    randfloat(current, 0.9, 1.4, basePrice);
+    randfloat(current, 900, 1400, basePrice);
+    randfloat(current, 1400, 2000, basePrice);
+    randfloat(current, 2000, 6000, basePrice);
+    randfloat(current, 1400, 2000, basePrice);
+    randfloat(current, 900, 1400, basePrice);
 
     work += 5;
     for (; work < 14; work++) {
-      randfloat(current, 0.4, 0.9, basePrice);
+      randfloat(current, 400, 900, basePrice);
     }
 
     // commit probability
@@ -101,8 +91,8 @@ const pattern2 = (basePrice) => {
   for (; work < 14; work++) {
     randfloat(
       current,
-      0.9 - 0.05 - 0.03 * (work - 2) - 0.02 * (work - 2),
-      0.9 - 0.03 * (work - 2),
+      900 - 50 - 30 * (work - 2) - 20 * (work - 2),
+      900 - 30 * (work - 2),
       basePrice
     );
   }
@@ -119,23 +109,23 @@ const pattern3 = (basePrice) => {
     for (; work < peakStart; work++) {
       randfloat(
         current,
-        0.4 - 0.03 * (work - 2) - 0.02 * (work - 2),
-        0.9 - 0.03 * (work - 2),
+        400 - 30 * (work - 2) - 20 * (work - 2),
+        900 - 30 * (work - 2),
         basePrice
       );
     }
-    randfloat(current, 0.9, 1.4, basePrice);
-    randfloat(current, 0.9, 1.4, basePrice);
-    randfloat(current, 1.4, 2.0, basePrice, (v) => v - 1);
-    randfloat(current, 1.4, 2.0, basePrice);
-    randfloat(current, 1.4, 2.0, basePrice, (v) => v - 1);
+    randfloat(current, 900, 1400, basePrice);
+    randfloat(current, 900, 1400, basePrice);
+    randfloat(current, 1400, 2000, basePrice, (v) => v - 1);
+    randfloat(current, 1400, 2000, basePrice);
+    randfloat(current, 1400, 2000, basePrice, (v) => v - 1);
 
     work += 5;
     for (let i = work; work < 14; work++) {
       randfloat(
         current,
-        0.4 - 0.03 * (work - i) - 0.02 * (work - i),
-        0.9 - 0.03 * (work - i),
+        400 - 30 * (work - i) - 20 * (work - i),
+        900 - 30 * (work - i),
         basePrice
       );
     }
